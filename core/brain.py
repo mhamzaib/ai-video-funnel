@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -15,15 +16,45 @@ def get_next_episode():
     with open('database/series_progress.json') as f:
         state = json.load(f)
 
+        system_msg = "You are a cinematic scriptwriter. You ONLY respond in valid JSON. Never add conversational text"
+
         #prompt for gemini
-        prompt = f"Write Episode {state['current_episode']} for {[state['series_name']]}. Context: {state['world_bible']}. Previous status: {state['protagonist']['current_status']}. Return JSON with scenes and a cliffhanger."
+        prompt = f"""
+                    Write a 60-second episodic script for Episode {state['current_episode']} of '{state['series_name']}'.
+                    Character: {state['protagonist']['name']} ({state['protagonist']['description']}).
+                    Current Status: {state['protagonist']['current_status']}
+
+                    Return a JSON object with EXACTLY this structure:
+                    {{
+                    "episode_title": "Title",
+                    "scenes": [
+                        {{
+                        "id": 1,
+                        "voiceover": "High-retention hook narration",
+                        "visual_prompt": "Cinematic shot of {state['protagonist']['name']}, seed {state['protagonist']['visual_seed']}, [ACTION], 4k",
+                        "duration": 5
+                        }},
+                        // ... (Include exactly 10 total scenes)
+                    ],
+                    "next_status": "A cliffhanger summary for the next episode's memory"
+                    }}
+                """
+        
+        
         response = client.chat.completions.create(
             model="google/gemini-3-flash-preview",
-            messages=[{"role": "user", "content": prompt}],
+            messages=[{"rote": "system", "content": system_msg},{"role": "user", "content": prompt}],
             response_format={"type":"json_object"}
         )
-
-        return json.loads(response.choices[0].message.content)
+        raw_content = response.choices[0].message.content
+        clean_json = re.sub(r"```json|```","",raw_content).strip()
+        data = json.loads(clean_json)
+    
+        os.makedirs('output/temp', exist_ok=True)
+        with open('output/temp/current_script.json', 'w') as f:
+            json.dump(data, f, indent=2)
+        
+        return data
 
 #prevent regeneration of same episode, append to progress
 def update_series_state(new_episode_data):
@@ -31,9 +62,26 @@ def update_series_state(new_episode_data):
         state = json.load(f)
 
     state['current_episode'] +=1
-    state['protagonist']['current_status'] = new_episode_data['next_episode_hook']
+    state['protagonist']['current_status'] = new_episode_data.get('next_status', "The story continues...")
 
-    with open('database/series_progress', 'w') as f:
+    with open('database/series_progress.json', 'w') as f:
         json.dump(state, f, indent=2)
     
     print(f"Database updated to Episode {state['current_episode']}")
+
+
+## FOR TESTING ONLY
+# if __name__ == "__main__":
+#     try:
+#         print("--- Testing Brain & Memory System ---")
+#         new_episode = get_next_episode()
+        
+#         print(f"TITLE: {new_episode.get('episode_title')}")
+#         print(f"FIRST SCENE VO: {new_episode['scenes'][0]['voiceover']}")
+#         print(f"NEXT STATUS: {new_episode.get('next_status')}")
+        
+#         update_series_state(new_episode)
+        
+#         print("--- Test Successful ---")
+#     except Exception as e:
+#         print(f"--- Test Failed: {e} ---")
