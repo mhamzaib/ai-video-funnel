@@ -1,12 +1,12 @@
 {
   "series_name": "The Last Cyberpunk",
-  "current_episode": 1,
+  "current_episode": 3,
   "world_bible": "A neon dystopian world where the sun never rises.",
   "protagonist": {
     "name": "Jax",
     "description": "Bionic left arm, yellow hooded jacket, tech goggles.",
     "visual_seed": 882910,
-    "current_status": "Entering the forbidden sector."
+    "current_status": "Jax discovers a 'Wanted' hologram featuring his own biometric data, just as sirens begin to wail in the distance."
   },
   "plot_history": []
 }

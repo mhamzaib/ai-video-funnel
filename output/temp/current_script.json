@@ -1,0 +1,66 @@
+{
+  "episode_title": "Shadow of the Guardian",
+  "scenes": [
+    {
+      "id": 1,
+      "voiceover": "In the Neon Under-city, you don't find trouble. It finds you.",
+      "visual_prompt": "Cinematic shot of Jax, seed 882910, stepping over a threshold into a dark, foggy warehouse, 4k",
+      "duration": 6
+    },
+    {
+      "id": 2,
+      "voiceover": "Something was watching from the rafters. Something ancient.",
+      "visual_prompt": "Cinematic shot of Jax, seed 882910, looking up as a massive mechanical eye glows red in the ceiling shadows, 4k",
+      "duration": 6
+    },
+    {
+      "id": 3,
+      "voiceover": "The Iron Sentinel. A relic of the corporate wars.",
+      "visual_prompt": "Cinematic shot of Jax, seed 882910, unsheathing a thermal blade as the guardian drops from the ceiling, 4k",
+      "duration": 6
+    },
+    {
+      "id": 4,
+      "voiceover": "My bionic arm hummed. It knew the target better than I did.",
+      "visual_prompt": "Cinematic shot of Jax, seed 882910, bionic left arm glowing blue with electricity, 4k",
+      "duration": 6
+    },
+    {
+      "id": 5,
+      "voiceover": "Metal clashed against kinetic shielding.",
+      "visual_prompt": "Cinematic shot of Jax, seed 882910, dodging a massive steel claw that smashes the ground, 4k",
+      "duration": 6
+    },
+    {
+      "id": 6,
+      "voiceover": "One hit from that, and I'm scrap metal.",
+      "visual_prompt": "Cinematic shot of Jax, seed 882910, sliding under the guardian\u2019s legs, sparks flying, 4k",
+      "duration": 6
+    },
+    {
+      "id": 7,
+      "voiceover": "I saw the vent. The cooling core was exposed.",
+      "visual_prompt": "Cinematic shot of Jax, seed 882910, adjusting tech goggles to highlight a glowing weak point on the robot, 4k",
+      "duration": 6
+    },
+    {
+      "id": 8,
+      "voiceover": "I had one shot. I didn't plan on missing.",
+      "visual_prompt": "Cinematic shot of Jax, seed 882910, leaping into the air with his bionic fist charged, 4k",
+      "duration": 6
+    },
+    {
+      "id": 9,
+      "voiceover": "The explosion shook the foundation of the sector.",
+      "visual_prompt": "Cinematic shot of Jax, seed 882910, standing amidst a massive explosion of blue sparks and smoke, 4k",
+      "duration": 6
+    },
+    {
+      "id": 10,
+      "voiceover": "But behind the guardian, I saw something much worse.",
+      "visual_prompt": "Cinematic shot of Jax, seed 882910, staring in horror as a holographic transmission of his own face appears on the wall, 4k",
+      "duration": 6
+    }
+  ],
+  "next_status": "Jax discovers a 'Wanted' hologram featuring his own biometric data, just as sirens begin to wail in the distance."
+}
