@@ -20,23 +20,30 @@ def get_next_episode():
 
         #prompt for gemini
         prompt = f"""
-                    Write a 60-second episodic script for Episode {state['current_episode']} of '{state['series_name']}'.
-                    Character: {state['protagonist']['name']} ({state['protagonist']['description']}).
-                    Current Status: {state['protagonist']['current_status']}
+                    Write a terrifying 30-second horror narration for Episode {state['current_episode']} of '{state['series_name']}'.
+                    Character: {state['protagonist']['name']} - {state['protagonist']['description']}
+                    Narrator: An ominous, cold, and detached observer.
 
-                    Return a JSON object with EXACTLY this structure:
+                    STRICT PRODUCTION RULES:
+                    1. THE HOOK: Scene 1 MUST start with a sound description in the voiceover (e.g., "[WET THUD]... They say some doors should never be opened.").
+                    2. NARRATOR VOICE: Use ALL CAPS for emphasis. Use "..." for long, chilling pauses. Use descriptive, atmospheric horror language.
+                    3. VISUAL STYLE: Use 'Found Footage style, cinematic graphic novel art, heavy film grain, VHS glitch, shaky cam, distorted faces, 9:16'.
+                    4. THE SEED: Every visual_prompt MUST include 'seed {state['protagonist']['visual_seed']}' for Elias to keep him consistent.
+                    5. NO SLOP: Focus on the scenario. Describe Elias's suffering in the third person.
+
+                    Return a JSON object with EXACTLY 6 scenes:
                     {{
-                    "episode_title": "Title",
+                    "episode_title": "The Digital Rot",
                     "scenes": [
                         {{
                         "id": 1,
-                        "voiceover": "High-retention hook narration",
-                        "visual_prompt": "Cinematic shot of {state['protagonist']['name']}, seed {state['protagonist']['visual_seed']}, [ACTION], 4k",
+                        "voiceover": "[STATIC CRACKLE]... In the dark... the code began to bleed. Elias (seed {state['protagonist']['visual_seed']}) didn't realize... his reality was already DELETING.",
+                        "visual_prompt": "Found footage style, DC Comics aesthetic, Elias (seed {state['protagonist']['visual_seed']}) staring in horror at a glitching screen, heavy grain, bold lines, 9:16",
                         "duration": 5
                         }},
-                        // ... (Include exactly 10 total scenes)
+                        // ... total of 6 scenes
                     ],
-                    "next_status": "A cliffhanger summary for the next episode's memory"
+                    "next_status": "A cliffhanger summary for the database"
                     }}
                 """
         
@@ -70,18 +77,18 @@ def update_series_state(new_episode_data):
     print(f"Database updated to Episode {state['current_episode']}")
 
 
-## FOR TESTING ONLY
-# if __name__ == "__main__":
-#     try:
-#         print("--- Testing Brain & Memory System ---")
-#         new_episode = get_next_episode()
+# FOR TESTING ONLY
+if __name__ == "__main__":
+    try:
+        print("--- Testing Brain & Memory System ---")
+        new_episode = get_next_episode()
         
-#         print(f"TITLE: {new_episode.get('episode_title')}")
-#         print(f"FIRST SCENE VO: {new_episode['scenes'][0]['voiceover']}")
-#         print(f"NEXT STATUS: {new_episode.get('next_status')}")
+        print(f"TITLE: {new_episode.get('episode_title')}")
+        print(f"FIRST SCENE VO: {new_episode['scenes'][0]['voiceover']}")
+        print(f"NEXT STATUS: {new_episode.get('next_status')}")
         
-#         update_series_state(new_episode)
+        update_series_state(new_episode)
         
-#         print("--- Test Successful ---")
-#     except Exception as e:
-#         print(f"--- Test Failed: {e} ---")
+        print("--- Test Successful ---")
+    except Exception as e:
+        print(f"--- Test Failed: {e} ---")
