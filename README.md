@@ -43,7 +43,7 @@ An automated, budget-friendly pipeline for generating high-retention, episodic A
 
 #### 2. Installation
 ```
-git clone [https://github.com/yourusername/ai-video-funnel.git](https://github.com/yourusername/ai-video-funnel.git)
+git clone https://github.com/mhamzaib/ai-video-funnel.git
 cd ai-video-funnel
 pip install -r requirements.txt
 ```
