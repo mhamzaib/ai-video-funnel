@@ -19,7 +19,7 @@ def get_next_episode():
         system_msg = "You are a cinematic scriptwriter. You ONLY respond in valid JSON. Never add conversational text"
 
         #prompt for gemini
-        prompt = f"""
+        prompt = f""" 
                     Write a 30-second narration script for Episode {state['current_episode']} of '{state['series_name']}'.
 
                     STRICT NARRATIVE STYLE:
