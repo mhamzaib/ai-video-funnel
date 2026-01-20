@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Prevent output temp files from being sent
+output/temp/*
+
 # Distribution / packaging
 .Python
 build/

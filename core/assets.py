@@ -15,13 +15,15 @@ media_client = OpenAI (
 
 def generate_voiceover(scene_id, text):
     print(f"Generating audio for scene {scene_id}...")
-    clean_text = re.sub(r'\[.*?\]|\(.*?\)', '', text).strip()
-    narrator_text = "... " + clean_text.replace(". ", "...   ").replace("! ", "!!!   ")    
+    clean_text = re.sub(r'\(.*?\)', '', text).strip()
+    dramatic_text = clean_text.replace(". ", "...  ").replace("! ", "!!!  ")
+    
     ## ONLY TESTING SO USING Edge tts
     response = media_client.audio.speech.create(
         model="tts-1-hd",
         voice="onyx",
-        input=narrator_text
+        speed=1.1,
+        input=dramatic_text
     )
     path = f"output/temp/audio/audio_{scene_id}.mp3"
     response.write_to_file(path)

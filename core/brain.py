@@ -20,32 +20,35 @@ def get_next_episode():
 
         #prompt for gemini
         prompt = f"""
-                    Write a terrifying 30-second horror narration for Episode {state['current_episode']} of '{state['series_name']}'.
-                    Character: {state['protagonist']['name']} - {state['protagonist']['description']}
-                    Narrator: An ominous, cold, and detached observer.
+                    Write a 30-second narration script for Episode {state['current_episode']} of '{state['series_name']}'.
 
-                    STRICT PRODUCTION RULES:
-                    1. THE HOOK: Scene 1 MUST start with a sound description in the voiceover (e.g., "[WET THUD]... They say some doors should never be opened.").
-                    2. NARRATOR VOICE: Use ALL CAPS for emphasis. Use "..." for long, chilling pauses. Use descriptive, atmospheric horror language.
-                    3. VISUAL STYLE: Use 'Found Footage style, cinematic graphic novel art, heavy film grain, VHS glitch, shaky cam, distorted faces, 9:16'.
-                    4. THE SEED: Every visual_prompt MUST include 'seed {state['protagonist']['visual_seed']}' for Elias to keep him consistent.
-                    5. NO SLOP: Focus on the scenario. Describe Elias's suffering in the third person.
+                    STRICT NARRATIVE STYLE:
+                    1. THE NARRATOR: An indifferent, cold observer. You are not a poet. You are a witness.
+                    2. NO SLOP RULE: Absolutely NO flowery metaphors. 
+                    - DO NOT use words like: 'rot', 'doom', 'small soft thing', 'gods', 'playing with', 'scream', 'living tissue'.
+                    - Avoid 'purple prose'. If a sentence sounds like a dark poem, rewrite it to sound like a clinical report.
+                    3. THE DICTION: Use basic, 'blue-collar' English. Use sensory facts (cold, wet, smell of copper, sound of breathing) instead of abstract concepts.
+                    4. SENTENCE STRUCTURE: Short. Punchy. Maximum 12 words per sentence.
+                    5. THE CHARACTER: Refer to Characters (seed {state['protagonist']['visual_seed']}) as subjects. They never speaks.
 
-                    Return a JSON object with EXACTLY 6 scenes:
+                    STRICT METADATA RULES:
+                    - Keep character (seed {state['protagonist']['visual_seed']}) in every visual prompt for consistency.
+                    - Place all SFX in [SQUARE BRACKETS] at the end of the voiceover lines.
+
+                    Return ONLY a JSON object with this structure (example):
                     {{
-                    "episode_title": "The Digital Rot",
+                    "episode_title": "The First Signal",
                     "scenes": [
                         {{
                         "id": 1,
-                        "voiceover": "[STATIC CRACKLE]... In the dark... the code began to bleed. Elias (seed {state['protagonist']['visual_seed']}) didn't realize... his reality was already DELETING.",
-                        "visual_prompt": "Found footage style, DC Comics aesthetic, Elias (seed {state['protagonist']['visual_seed']}) staring in horror at a glitching screen, heavy grain, bold lines, 9:16",
+                        "voiceover": "Elias (seed {state['protagonist']['visual_seed']}) is in the station. The power has been cut for years. Something is still humming. [LOW HUM]",
+                        "visual_prompt": "Found footage, gritty DC Comics style, 9:16. Elias (seed {state['protagonist']['visual_seed']}) stands in a dark ruined radio station, flashlight beam hitting dust.",
                         "duration": 5
                         }},
-                        // ... total of 6 scenes
-                    ],
-                    "next_status": "A cliffhanger summary for the database"
+                        ... (total 6 scenes)
+                    ]
                     }}
-                """
+                    """
         
         
         response = client.chat.completions.create(
