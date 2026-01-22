@@ -21,7 +21,7 @@ def generate_voiceover(scene_id, text):
     ## ONLY TESTING SO USING Edge tts
     response = media_client.audio.speech.create(
         model="tts-1-hd",
-        voice="onyx",
+        voice="fable",
         speed=1.1,
         input=dramatic_text
     )

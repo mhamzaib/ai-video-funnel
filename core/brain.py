@@ -12,48 +12,58 @@ client = OpenAI (
 )
 
 def get_next_episode():
+
+    #first get bible context if available
+    bible_context = ""
+    if os.path.exists('database/world_bible.txt'):
+        with open('database/world_bible.txt') as b:
+            bible_context = b.read()
+
     #Load memory from DB
     with open('database/series_progress.json') as f:
         state = json.load(f)
 
-        system_msg = "You are a cinematic scriptwriter. You ONLY respond in valid JSON. Never add conversational text"
+        system_msg = "You are a cinematic scriptwriter. You ONLY respond in valid JSON. Never add conversational text. Base your story logic on the following World Bible context: \n "
+        f"{bible_context}"
 
         #prompt for gemini
         prompt = f"""
-                    Write a 30-second narration script for Episode {state['current_episode']} of '{state['series_name']}'.
+                Write a 60-second high-tension narration script for Episode {state['current_episode']} of '{state['series_name']}'.
 
-                    STRICT NARRATIVE STYLE:
-                    1. THE NARRATOR: An indifferent, cold observer. You are not a poet. You are a witness.
-                    2. NO SLOP RULE: Absolutely NO flowery metaphors. 
-                    - DO NOT use words like: 'rot', 'doom', 'small soft thing', 'gods', 'playing with', 'scream', 'living tissue'.
-                    - Avoid 'purple prose'. If a sentence sounds like a dark poem, rewrite it to sound like a clinical report.
-                    3. THE DICTION: Use basic, 'blue-collar' English. Use sensory facts (cold, wet, smell of copper, sound of breathing) instead of abstract concepts.
-                    4. SENTENCE STRUCTURE: Short. Punchy. Maximum 12 words per sentence.
-                    5. THE CHARACTER: Refer to Characters (seed {state['protagonist']['visual_seed']}) as subjects. They never speaks.
+                TECHNICAL REQUIREMENT:
+                - Every single 'voiceover' and 'visual_prompt' MUST include the string: "(seed {state['protagonist']['visual_seed']})".
+                - If you mention the main character or secondary characters by their name or pronoun, you must attach that seed. This is for image generation consistency.
 
-                    STRICT METADATA RULES:
-                    - Keep character (seed {state['protagonist']['visual_seed']}) in every visual prompt for consistency.
-                    - Place all SFX in [SQUARE BRACKETS] at the end of the voiceover lines.
+                STRICT NARRATIVE STYLE:
+                1. THE NARRATOR: You are an indifferent witness recording a subject. No emotions.
+                2. NO SLOP: Do not use flowery metaphors. No 'rot', 'doom', 'void', or 'gods'.
+                3. THE DICTION: Use blue-collar English. Describe physical facts. 
+                - Instead of: "He feels the weight of his sins," 
+                - Use: "His heart rate is 110. He is sweating."
+                4. STRUCTURE: 10 scenes. Total duration 60 seconds. Each scene ~6 seconds. Around 15-20 words per scene.
 
-                    Return ONLY a JSON object with this structure (example):
+                STRICT METADATA:
+                - SFX must be in [BRACKETS] at the very end of the voiceover field.
+
+                OUTPUT FORMAT EXAMPLE (JSON ONLY):
+                {{
+                "episode_title": "{state['series_name']} - Episode {state['current_episode']}",
+                "lore_update": "One sentence summarizing the permanent change in the world or character state.",
+                "scenes": [
                     {{
-                    "episode_title": "The First Signal",
-                    "scenes": [
-                        {{
-                        "id": 1,
-                        "voiceover": "Elias (seed {state['protagonist']['visual_seed']}) is in the station. The power has been cut for years. Something is still humming. [LOW HUM]",
-                        "visual_prompt": "Found footage, gritty DC Comics style, 9:16. Elias (seed {state['protagonist']['visual_seed']}) stands in a dark ruined radio station, flashlight beam hitting dust.",
-                        "duration": 5
-                        }},
-                        ... (total 6 scenes)
-                    ]
+                    "id": 1,
+                    "voiceover": "Elias (seed {state['protagonist']['visual_seed']}) enters the radio station. The air is heavy. [FOOTSTEPS ON GRIT]",
+                    "visual_prompt": "Found footage style, gritty DC Comics aesthetic, 9:16. Elias (seed {state['protagonist']['visual_seed']}) steps into a dark station with a flashlight.",
+                    "duration": 6
                     }}
-                    """
+                ]
+                }}
+                """
         
         
         response = client.chat.completions.create(
             model="google/gemini-3-flash-preview",
-            messages=[{"rote": "system", "content": system_msg},{"role": "user", "content": prompt}],
+            messages=[{"role": "system", "content": system_msg},{"role": "user", "content": prompt}],
             response_format={"type":"json_object"}
         )
         raw_content = response.choices[0].message.content
@@ -66,6 +76,17 @@ def get_next_episode():
         
         return data
 
+def update_world_bible(new_episode_data):
+    lore = new_episode_data.get('lore_update', "Subject Elias continued forward. No significant lore changes recorded.")
+    episode_num = new_episode.get('episode_title', "Unknown Episode")
+
+    bible_path="database/world_bible.txt"
+    with open(bible_path, 'a') as f:
+        f.write(f"\n Episode Log [{episode_num}]: {lore}")
+    print(f"Lore added to Bible: {lore}")
+
+
+
 #prevent regeneration of same episode, append to progress
 def update_series_state(new_episode_data):
     with open('database/series_progress.json') as f:
@@ -76,6 +97,8 @@ def update_series_state(new_episode_data):
 
     with open('database/series_progress.json', 'w') as f:
         json.dump(state, f, indent=2)
+
+    update_world_bible(new_episode_data)
     
     print(f"Database updated to Episode {state['current_episode']}")
 
