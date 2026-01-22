@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # Prevent output temp files from being sent
-output/temp/*
+output/*
 
 # Distribution / packaging
 .Python
