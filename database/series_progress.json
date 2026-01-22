@@ -1,12 +1,12 @@
 {
-  "series_name": "The Last Cyberpunk",
-  "current_episode": 3,
-  "world_bible": "A neon dystopian world where the sun never rises.",
+  "series_name": "VOID_SIGNAL",
+  "current_episode": 1,
+  "world_bible": "SERIES PREMISE: In a silent world, scavenger Elias hunts for 'Signals'—digital ghosts trapped in rotting hardware. ATMOSPHERE: Analog horror, DC Comics aesthetic, gritty and unsettling.",
   "protagonist": {
-    "name": "Jax",
-    "description": "Bionic left arm, yellow hooded jacket, tech goggles.",
-    "visual_seed": 882910,
-    "current_status": "Jax discovers a 'Wanted' hologram featuring his own biometric data, just as sirens begin to wail in the distance."
+    "name": "Elias",
+    "description": "A pale, tired tech-scavenger wearing a heavy grey parka and a cracked headset. Bloodshot eyes.",
+    "visual_seed": 6661013,
+    "current_status": "PILOT EPISODE: Elias is entering an abandoned radio station. He needs to explain his job to the 'recorder' while searching for a legendary signal."
   },
   "plot_history": []
 }
