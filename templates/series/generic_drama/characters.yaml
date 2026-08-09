@@ -1,0 +1,9 @@
+characters:
+  - name: Lead
+    role: protagonist
+    appearance: >-
+      A mid-20s person with warm brown skin, short curly hair, olive jacket over
+      a cream shirt, small silver necklace, kind tired eyes. Same clothes every scene.
+    visual_seed: 0
+    voice_id: nova
+    voice_speed: 1.0
