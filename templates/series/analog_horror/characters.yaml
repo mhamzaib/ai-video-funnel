@@ -1,0 +1,9 @@
+characters:
+  - name: Protagonist
+    role: protagonist
+    appearance: >-
+      A pale exhausted wanderer in a worn grey coat, cracked over-ear headset,
+      short messy dark hair, bloodshot eyes, scuffed boots. Same outfit every scene.
+    visual_seed: 0
+    voice_id: onyx
+    voice_speed: 1.1

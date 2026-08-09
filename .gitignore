@@ -9,6 +9,11 @@ __pycache__/
 # Prevent output temp files from being sent
 output/temp/*
 
+# Series episode media + run logs (keep pack configs)
+series/*/output/
+secrets/*
+!secrets/.gitkeep
+
 # Distribution / packaging
 .Python
 build/

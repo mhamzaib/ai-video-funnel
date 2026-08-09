@@ -1,72 +1,77 @@
-**NOTE: WIP, Readme generated via AI**
+# Multi-Series AI Video Funnel
 
-# Episodic AI Content Factory
+Automated vertical Shorts pipeline: **story → TTS + Flux stills → FFmpeg Ken Burns → YouTube metadata/upload**, driven by **series packs** so you can run any genre without editing Python.
 
-An automated, budget-friendly pipeline for generating high-retention, episodic AI video series. Built for creators aiming to hit social media monetization milestones via consistent, high-quality storytelling.
+## Quick start
 
-## Key Features
-
-* **Consistency Engine:** Uses a "World Bible" and character seeding to ensure characters and environments look the same across all episodes—no AI slop.
-* **Episodic Logic:** Remembers past events to build a continuous narrative arc rather than random clips.
-* **One-Click Funnel:** Integrated with OpenRouter (Gemini 3 Flash / Nano Banana) for low-cost, high-fidelity generation.
-* **Auto-Post & SEO:** Automatically generates viral-ready titles, descriptions, and tags, then posts to YouTube Shorts, TikTok, and Instagram Reels.
-* **Budget First:** Orchestrated in Python and FFmpeg to avoid expensive SaaS subscriptions.
-
-## Project Structure
-
-```
-/ai-video-funnel
-├── main.py                 # The Daily Conductor (Runs the loop)
-├── .env.example            # Template for API keys (OpenRouter, Google, TikTok)
-├── requirements.txt        # python-dotenv, openai, google-api-python-client
-│
-├── /database               # Long-term Memory
-│   ├── series_progress.json # Tracks current episode, character seeds, & plot points
-│   └── world_bible.txt      # The "Truth" of your universe for the AI
-│
-├── /core                   # The Logic Modules
-│   ├── brain.py            # OpenRouter orchestrator (Script & JSON Gen)
-│   ├── assets.py           # Media handling (Video clips & TTS audio)
-│   ├── compiler.py         # FFmpeg engine for stitching & subtitles
-│   └── uploader.py         # Social media API integration
-│
-└── /output                 # Local storage for archives
-    ├── /temp               # Ephemeral clips per run
-    └── /final              # Final .mp4 exports organized by episode
-```
-
-### Quick Start
-#### 1. Prerequisites
-- Python 3.10+
-- FFmpeg (installed on your system path)
-- OpenRouter API Key
-
-#### 2. Installation
-```
-git clone [https://github.com/yourusername/ai-video-funnel.git](https://github.com/yourusername/ai-video-funnel.git)
-cd ai-video-funnel
+```bash
+python -m venv venv
+venv\Scripts\activate          # Windows
 pip install -r requirements.txt
+# Install FFmpeg and put it on PATH
+copy .env.example .env         # fill OPENAI_API_KEY, FAL_KEY
 ```
 
-#### 3. Configuration
-Rename .env.example to .env and add your keys:
+### Run VOID_SIGNAL (example pack)
+
+```bash
+# Full funnel (upload dry-run skips live YouTube)
+python main.py run --series void_signal --dry-run
+
+# Partial stages
+python main.py run --series void_signal --stages brain,assets,compile
+python main.py status --series void_signal
 ```
-OPENROUTER_API_KEY=your_key_here
-YOUTUBE_CLIENT_ID=your_id_here
-SERIES_NAME="The Last Cyberpunk"
-POSTING_FREQUENCY=2  # Number of videos per day
+
+### Start a new series
+
+```bash
+python main.py templates
+python main.py init --slug my_show --template analog_horror --name "My Show"
+# Edit series/my_show/world_bible.md and characters.yaml appearance lock
+python main.py run --series my_show --stages brain --review-script --dry-run
 ```
 
-#### 4. Run the Factory
-- Bash
-- python main.py
+### Lifecycle
 
+```bash
+python main.py archive --series my_show
+python main.py archive --series my_show --complete
+python main.py activate --series my_show
+```
 
-### Monetization Strategy
-This repo is designed to solve the "Retention Problem." By using episodic cliffhangers and visual consistency, the funnel targets the YouTube Shorts algorithm's "Viewed vs. Swiped Away" metric.
-Part 1: The Hook (Pattern Interrupt)
-Part 2: Story Development (Consistent Characters)
-Part 3: The Bridge (Cliffhanger for Episode 2)
+## Series pack layout
 
-### Contributing
-I am building this to reach monetization by the end of the month. If you want to contribute to the auto-subtitling engine or the Instagram API module, feel free to open a PR
+```
+series/<slug>/
+  series.yaml          # genre, style_prompt, models, caption, privacy
+  characters.yaml      # appearance lock + visual_seed + TTS voice
+  world_bible.md
+  progress.json        # episode counter + plot_history
+  prompts/             # narration + metadata templates
+  output/episodes/NNN/ # script, assets, final.mp4, metadata
+```
+
+Character consistency = **locked appearance string** + **Flux seed from pack** + style from `series.yaml`. Seed numbers are never spoken in VO.
+
+## YouTube setup
+
+1. Create a Google Cloud OAuth client (Desktop app).
+2. Save JSON to `secrets/youtube_client_secrets.json`.
+3. First upload opens a browser for consent; token cached at `secrets/youtube_token.json`.
+4. Use `--dry-run` until you are ready; default privacy is `unlisted` in packs.
+
+## Tests
+
+```bash
+python -m unittest tests.test_pipeline -v
+```
+
+## New series checklist
+
+1. `python main.py init --slug … --template analog_horror|generic_drama`
+2. Fill `world_bible.md` and tighten `characters.yaml` appearance
+3. Set `seo_keywords` / `style_prompt` in `series.yaml`
+4. `run --stages brain --review-script`
+5. `run --stages assets,compile,seo --episode N --dry-run`
+6. Upload when ready (remove `--dry-run`)

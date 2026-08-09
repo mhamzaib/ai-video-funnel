@@ -1,0 +1,41 @@
+name: VOID_SIGNAL
+slug: void_signal
+genre: analog_horror
+style_prompt: >-
+  found footage, gritty DC Comics style, cinematic graphic novel art, bold lines,
+  cel-shaded, gritty atmosphere, highly detailed illustration, muted industrial palette,
+  VHS grain, analog horror mood, 9:16 vertical frame
+image_size: portrait_16_9
+image_model: fal-ai/flux/schnell
+identity_model: fal-ai/flux-pulid
+image_steps: 4
+identity_steps: 20
+id_weight: 0.9
+use_character_ref: true
+llm_model: gpt-4o-mini
+scenes_per_episode: 6
+plot_history_limit: 8
+tts_model: gpt-4o-mini-tts
+default_voice_id: ash
+default_voice_speed: 1.0
+voice_instructions: >-
+  You are a close-mic field narrator. Sound human: uneven micro-timing, quiet weight.
+  Raise slightly on danger or discovery. Soften on aftermath.
+  Never flat GPS voice. Never theatrical stage actor.
+privacy_status: unlisted
+made_for_kids: false
+youtube_category_id: "24"
+seo_keywords:
+  - analog horror
+  - void signal
+  - found footage
+  - horror shorts
+  - scavenger story
+status: active
+caption:
+  font: Arial
+  font_size: 48
+  primary_color: "&H00FFFFFF"
+  outline_color: "&H00000000"
+  outline: 3
+  margin_v: 120

@@ -1,0 +1,29 @@
+name: Generic Drama Example
+slug: generic_drama
+genre: drama
+style_prompt: >-
+  cinematic realism, soft natural light, film still, grounded wardrobe,
+  shallow depth of field, vertical 9:16 frame, emotionally intimate framing
+image_size: portrait_16_9
+image_model: fal-ai/flux/schnell
+image_steps: 4
+llm_model: gpt-4o-mini
+scenes_per_episode: 6
+plot_history_limit: 8
+default_voice_id: nova
+default_voice_speed: 1.0
+privacy_status: unlisted
+made_for_kids: false
+youtube_category_id: "24"
+seo_keywords:
+  - short story
+  - drama shorts
+  - serialized fiction
+status: active
+caption:
+  font: Arial
+  font_size: 46
+  primary_color: "&H00FFFFFF"
+  outline_color: "&H00000000"
+  outline: 2
+  margin_v: 100

@@ -1,0 +1,11 @@
+characters:
+- name: Elias
+  role: protagonist
+  pronouns: he/him
+  appearance: 'Elias: pale tired tech-scavenger, heavy grey parka, cracked dark headset
+    over messy dark hair, bloodshot eyes, thin stubbled jaw, scuffed black boots,
+    cold distant stare. Identical face, hair, and clothing in every frame.'
+  visual_seed: 6661013
+  voice_id: ash
+  voice_speed: 1.0
+  reference_image: assets/elias_ref.jpg
