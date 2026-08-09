@@ -2,6 +2,14 @@
 
 Automated vertical Shorts pipeline: **story → TTS + Flux stills → FFmpeg Ken Burns → YouTube metadata/upload**, driven by **series packs** so you can run any genre without editing Python.
 
+## Key Features
+
+* **Consistency Engine:** Uses a "World Bible" and character seeding to ensure characters and environments look the same across all episodes—no AI slop.
+* **Episodic Logic:** Remembers past events to build a continuous narrative arc rather than random clips.
+* **One-Click Funnel:** Integrated with model-driven generation and FFmpeg for low-cost, automated Shorts creation.
+* **Auto-Post & SEO:** Automatically generates YouTube-ready titles, descriptions, and tags and handles upload dry-run safety.
+* **Budget First:** Orchestrated in Python and FFmpeg to avoid expensive SaaS subscriptions.
+
 ## Quick start
 
 ```bash
@@ -10,6 +18,57 @@ venv\Scripts\activate          # Windows
 pip install -r requirements.txt
 # Install FFmpeg and put it on PATH
 copy .env.example .env         # fill OPENAI_API_KEY, FAL_KEY
+```
+
+## Project Structure
+
+```
+/ai-video-funnel
+├── main.py                 # The Daily Conductor (Runs the loop)
+├── .env.example            # Template for API keys
+├── requirements.txt        # python-dotenv, openai, google-api-python-client
+│
+├── /database               # Long-term Memory
+│   ├── series_progress.json # Tracks current episode, character seeds, & plot points
+│   └── world_bible.txt      # The "Truth" of your universe for the AI
+│
+├── /core                   # The Logic Modules
+│   ├── brain.py            # LLM orchestrator and script generation
+│   ├── assets.py           # Media handling (images + TTS audio)
+│   ├── compiler.py         # FFmpeg engine for stitching & captions
+│   └── uploader.py         # YouTube upload integration
+│
+└── /output                 # Local storage for exports
+    ├── /temp               # Ephemeral clips per run
+    └── /final              # Final .mp4 exports organized by episode
+```
+
+### Run VOID_SIGNAL (example pack)
+
+```bash
+# Full funnel (upload dry-run skips live YouTube)
+python main.py run --series void_signal --dry-run
+
+# Partial stages
+python main.py run --series void_signal --stages brain,assets,compile
+python main.py status --series void_signal
+```
+
+### Start a new series
+
+```bash
+python main.py templates
+python main.py init --slug my_show --template analog_horror --name "My Show"
+# Edit series/my_show/world_bible.md and characters.yaml appearance lock
+python main.py run --series my_show --stages brain --review-script --dry-run
+```
+
+### Lifecycle
+
+```bash
+python main.py archive --series my_show
+python main.py archive --series my_show --complete
+python main.py activate --series my_show
 ```
 
 ### Run VOID_SIGNAL (example pack)
